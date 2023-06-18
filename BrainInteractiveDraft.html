@@ -1,0 +1,198 @@
+<!--THINGS TO KEEP IN MIND
+1. Zoom should be on 30%
+2. use mousepad to zoom in, not magnifying glass (should teach students how to do this)
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brain Interactive</title>
+
+
+    <style>
+        .popup-container {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .popup {
+            position: absolute;
+            display: none;
+            padding: 10px;
+            background-color: #f1f1f1;
+            border: 1px solid #888;
+            border-radius: 5px;
+            max-width: 300px;
+            z-index: 999;
+            /* Set a higher z-index to ensure the popup is displayed on top */
+        }
+        
+        img {
+            position: relative;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div class="popup-container">
+        <img src="https://static.wixstatic.com/media/38115d_6fc1aea75dc147c6ac192fb4eaee43e1~mv2.png/v1/fill/w_1809,h_1649,al_c,q_95,usm_0.66_1.00_0.01,enc_auto/Brain%20Background%202800x2550_2023_04_18.png" alt="Brain Anatomy" id="brainImage">
+        <div class="popup" id="popup"></div>
+    </div>
+
+    <script>
+        // Get the brain region based on mouse coordinates
+        function getBrainRegion(x, y) {
+            // Define the coordinates and boundaries of each brain region
+            const regions = [{
+                region: "Prefrontal Cortex",
+                x1: 169,
+                y1: 716,
+                x2: 264,
+                y2: 765
+            }, {
+                region: "Frontal Lobe",
+                x1: 531,
+                y1: 304,
+                x2: 613,
+                y2: 347
+            }, {
+                region: "Parietal Lobe",
+                x1: 1177,
+                y1: 399,
+                x2: 1255,
+                y2: 442
+            }, {
+                region: "Temporal Lobe",
+                x1: 664,
+                y1: 1114,
+                x2: 756,
+                y2: 1153
+            }, {
+                region: "Occipital Lobe",
+                x1: 1478,
+                y1: 681,
+                x2: 1570,
+                y2: 723
+            }, {
+                region: "Limbic Lobe & Cool Stuff (Limbic System)",
+                x1: 1069,
+                y1: 549,
+                x2: 1164,
+                y2: 596
+            }, {
+                region: "Limbic Lobe & Cool Stuff (Limbic System)",
+                x1: 658,
+                y1: 656,
+                x2: 751,
+                y2: 701
+            }, {
+                region: "Hippocampus",
+                x1: 0,
+                y1: 0,
+                x2: 0,
+                y2: 0
+            }, {
+                region: "Amygdala",
+                x1: 0,
+                y1: 0,
+                x2: 0,
+                y2: 0
+            }, {
+                region: "Hypothalamus",
+                x1: 0,
+                y1: 0,
+                x2: 0,
+                y2: 0
+            }, {
+                region: "Thalamus",
+                x1: 912,
+                y1: 746,
+                x2: 1005,
+                y2: 777
+            }, {
+                region: "Cerebellum",
+                x1: 1294,
+                y1: 1181,
+                x2: 1396,
+                y2: 1212
+            }, {
+                region: "Brainstem",
+                x1: 936,
+                y1: 1100,
+                x2: 1023,
+                y2: 1133
+            }];
+
+            // Iterate over the regions and check if the coordinates are within the boundaries
+            for (const region of regions) {
+                if (x >= region.x1 && x <= region.x2 && y >= region.y1 && y <= region.y2) {
+                    return region.region;
+                }
+            }
+
+            // Return null if no region is found
+            return null;
+        }
+
+        // Show the popup with the brain region description
+        function showPopup(event) {
+            const x = event.clientX;
+            const y = event.clientY;
+
+            const brainRegion = getBrainRegion(x, y);
+            const popup = document.getElementById("popup");
+
+            if (brainRegion) {
+                const descriptions = {
+                    "Prefrontal Cortex": "Associated with central executive functions: planning ahead and meeting goals, displaying self-control, following multiple-step directions even when interrupted, and staying focused despite distractions. \n\nTo accomplish these functions, the prefrontal cortex must have reciprocal connections (information moving in both directions) from and to brain structures associated with sensory perception, memory, and emotions.\n\nThe functional organization of the neural networks of the prefrontal cortex has increasingly been implicated as being disrupted by alcohol abuse.\n\nDoesn’t mature fully until age 25! Think about why this may be from an evolutionary perspective. Think about some issues common in teenagers that may be related to the prefrontal cortex not being fully developed.\n\n[Source: https://www.nimh.nih.gov/health/publications/the-teen-brain-7-things-to-know]",
+                    "Frontal Lobe": "The frontal lobe, the largest part of the cerebral cortex (folded outer area of the brain), plays a crucial role in memory, judgment, abstract thought, creativity, social appropriateness, motivation, personality, and motor tasks that involve voluntary movement. As some neuroscientists have said, it seems to play an essential role in 'what makes us human.' It is also the most common brain area to be injured in accidents, leading to various changes in individuals with frontal lobe brain injury. Alcohol affects frontal lobe functioning, resulting in lowering of inhibitions, decreased self-control, reduced judgment, and dulling of attention. Why might this be a bad thing?",
+                    "Parietal Lobe": "The parietal lobe, a major interpreter of the sensory world around the body, receives sensory information from all over the body and helps different brain areas work cooperatively. It processes touch, pressure, pain, heat, cold, and tension, and plays a role in navigation, interpretation of symbols, making sense of sounds and visual stimuli, and memory. Alcohol affects parietal lobe functioning, leading to sensory distortions, unsteadiness, loss of fine motor control, slower reaction time, and shaking. Check out the 3D model on this page (may take a while to load): https://www.medicalnewstoday.com/articles/parietal-lobe#definition",
+                    "Temporal Lobe": "The temporal lobe contains areas of the brain that manage or contribute to several useful abilities such as language, memory, and senses. It gives you the ability to understand the meaning of words and objects, helps you understand language, and form meaningful sentences. This region connects your senses, memory, language abilities, and emotions, which are all key to your survival. Problems in this brain area are important in epilepsy and possibly in dyslexia. Alcohol can affect temporal lobe functioning, causing slurred speech, impaired hearing, and alcohol withdrawal seizures. You probably wouldn't be able to understand this sentence with a damaged temporal lobe!",
+                    "Occipital Lobe": "The occipital lobe is responsible for decoding the messages sent from your eyes and turning that information into forms the rest of your brain can use. It is associated with visuospatial processing, distance and depth perception, color determination, object and face recognition, and memory formation. Can you guess how the occipital lobe functions in blind people? Alcohol affects the occipital lobe by creating visual disturbances such as blurred vision, double vision, and distortion or loss of depth perception. Why might this be extremely dangerous?",
+                    "Limbic Lobe & Cool Stuff (Limbic System)": "The limbic lobe, including the limbic system, is a collection of interconnected structures involved in processing emotion and memory, including the hippocampus, the amygdala, and the hypothalamus. While the primary function of the limbic system is to process and regulate emotion and memory, it also plays a significant role in the body's reaction to stressful situations and environments. Please watch this 10 ½ minute video (https://www.khanacademy.org/science/health-and-medicine/executive-systems-of-the-brain/emotion-lesson/v/emotions-limbic-system) as we will talk about these structures quite a bit throughout our time together. This video mentions alcohol effects which we will cover as well.",
+                    "Hippocampus": "The hippocampus, located deep in the temporal lobe, is critical for long-term memory formation, spatial navigation and orientation, and is important in Alzheimer's Disease, epilepsy, depression, and post-traumatic stress disorder. Look up how the hippocampus got its name!!!",
+                    "Amygdala": "The amygdala, named after the Greek word for almond, touches the hippocampus, receives inputs from the sensory systems and nerves bringing information from internal organs, and is the integrative center for emotions, emotional behavior, and motivation. Importantly, it links your emotions to many other brain abilities, especially memories, learning, and your senses. The amygdala plays a role in fear, aggression, understanding social intentions, parenting/caregiving, emotional memories, and addiction. Why do you think the amygdala is so important in alcohol and drug addiction?",
+                    "Hypothalamus": "The hypothalamus is a tiny structure deep in the brain that acts as your body's smart control coordinating center, linking the hormone system to the brain. It helps manage body temperature, blood pressure, hunger and thirst, the sense of fullness when eating, mood, sex drive, and sleep.",
+                    "Thalamus": "The thalamus is an egg-shaped structure in the middle of the brain that acts as a relay station for all incoming motor and sensory information, except for smell, from your body to your brain. Like a relay or train station, all information must first pass through your thalamus before being routed or directed to its destination in your brain's cerebral cortex for further processing and interpretation. It is important in prioritizing attention and plays a role in keeping you awake and alert. It appears that alcohol can disrupt prioritization and overall thalamic functioning.",
+                    "Cerebellum": "The cerebellum, often referred to as the 'little brain,' is important in motor coordination and balance but also plays a role in motor learning, emotion, and decision making. Alcohol use disorder is associated with cerebellar dysfunction, and children born with fetal alcohol spectrum disorder (FASD) show signs of poor motor coordination. Check out this short video describing how to look for signs of cerebellar disease: https://stanfordmedicine25.stanford.edu/the25/cerebellar.html. Maybe test a friend or family member?",
+                    "Brainstem": "The brainstem is a stalk-like structure that connects your spinal cord to your brain. It is the oldest part of the brain and is responsible for vital respiratory and cardiac functions. Additionally, it acts as the information vehicle between the spinal cord and brain. It is also important for balance, coordination, and reflexes, including swallowing. New research is showing that vulnerability to compulsive alcohol drinking may involve certain changes in cortex neurons projecting to the brainstem! No need to look, but if you want to see what a scientific paper looks like, you can click this link: (https://www.science.org/doi/10.1126/science.aay1186#:~:text=In%20search%20of%20the%20underlying,a%20driver%20of%20its%20expression.)"
+
+
+                };
+                popup.innerHTML = `<strong>${brainRegion}</strong><br>${descriptions[brainRegion]}`;
+                popup.style.display = "block";
+
+                const imageRect = document.getElementById("brainImage").getBoundingClientRect();
+                const popupWidth = popup.offsetWidth;
+                const popupHeight = popup.offsetHeight;
+                const posX = x - imageRect.left;
+                const posY = y - imageRect.top;
+                const popupX = posX + popupWidth + 10 > imageRect.width ? posX - popupWidth - 10 : posX + 10;
+                const popupY = posY + popupHeight + 10 > imageRect.height ? posY - popupHeight - 10 : posY + 10;
+                popup.style.left = popupX + "px";
+                popup.style.top = popupY + "px";
+            } else {
+                popup.style.display = "none";
+            }
+        }
+
+        // Hide the popup
+        function hidePopup() {
+            const popup = document.getElementById("popup");
+            popup.style.display = "none";
+        }
+
+        // Attach event listeners to the brain image
+        const brainImage = document.getElementById("brainImage");
+        brainImage.addEventListener("mousemove", showPopup);
+        brainImage.addEventListener("mouseleave", hidePopup);
+    </script>
+
+</body>
+
+</html>
